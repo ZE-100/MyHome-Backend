@@ -1,8 +1,9 @@
 package com.myhome.api.components.account.services.crud;
 
-import org.springframework.http.ResponseEntity;
+import com.myhome.api.components.account.dto.in.AccountInDTO;
+import com.myhome.api.components.account.dto.out.AccountOutDTO;
 
 public interface ILoginService {
 
-	ResponseEntity<?> login(String email, String password);
+	AccountOutDTO login(AccountInDTO account);
 }

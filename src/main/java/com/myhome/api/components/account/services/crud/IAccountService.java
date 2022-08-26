@@ -1,19 +1,17 @@
 package com.myhome.api.components.account.services.crud;
 
-import com.myhome.api.components.account.dto.AccountDTO;
-import com.myhome.api.components.account.entity.Account;
-
-import java.util.List;
+import com.myhome.api.components.account.dto.in.AccountChangeInDTO;
+import com.myhome.api.components.account.dto.in.AccountInDTO;
+import com.myhome.api.components.account.dto.out.AccountOutDTO;
+import com.myhome.api.util.Response;
 
 public interface IAccountService {
 
-	Account getAccount(String accountId);
+	AccountOutDTO getAccount(AccountInDTO accountIn);
 
-	List<AccountDTO> getAllAccounts();
+	AccountOutDTO update(AccountChangeInDTO accountChangeIn);
 
-	Boolean update(String email, String password, String newEmail, String newPassword);
+	Response delete(AccountInDTO accountIn);
 
-	Boolean delete(String email, String password);
-
-	Boolean forgottenPassword(String email, String newPassword, String validationSentence);
+	void forgottenPassword(AccountInDTO accountIn);
 }

@@ -1,13 +1,19 @@
-package com.myhome.api.components.account.dto;
+package com.myhome.api.components.account.dto.out;
 
 import com.myhome.api.components.house.entity.House;
 import com.myhome.api.components.member.entity.Member;
-import lombok.Data;
+import com.myhome.api.util.Response;
+import com.myhome.util.annotation.OutDTO;
+import lombok.*;
 
 import java.util.Set;
 
-@Data
-public class AccountDTO {
+@OutDTO
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class AccountOutDTO extends Response {
 
 	private Integer id;
 

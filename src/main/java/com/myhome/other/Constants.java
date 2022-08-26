@@ -19,6 +19,7 @@ public class Constants {
 			/* Account specific */
 			public static final String URL_LOGIN = "/login";
 			public static final String URL_REGISTER = "/register";
+			public static final String URL_PW_FORGOTTEN = "/pw-forgotten";
 
 			public static final String URL_GET = "/get";
 			public static final String URL_ADD = "/add";

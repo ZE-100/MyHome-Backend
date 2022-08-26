@@ -1,6 +1,9 @@
 package com.myhome.api.components.account.services.crud;
 
+import com.myhome.api.components.account.dto.out.AccountOutDTO;
+import com.myhome.api.components.account.dto.in.AccountRegistrationInDTO;
+
 public interface IRegisterService {
 
-	Boolean register(String email, String password, String validationSentence);
+	AccountOutDTO register(AccountRegistrationInDTO registration);
 }

@@ -5,11 +5,12 @@ public class Constants {
 	public static class API {
 		/* Top level */
 		public static final String URL_ACCOUNT = "/account";
-		public static final String URL_CLEANING = "/cleaning";
+		public static final String URL_TOKEN = "/token";
+		public static final String URL_MEMBER = "/member";
 		public static final String URL_HOUSE = "/house";
+		public static final String URL_CLEANING = "/cleaning";
 		public static final String URL_ITEM = "/item";
 		public static final String URL_MEAL = "/meal";
-		public static final String URL_MEMBER = "/member";
 		public static final String URL_RATING = "/rating";
 		public static final String URL_RECIPE = "/recipe";
 		public static final String URL_ROOM = "/room";
@@ -25,6 +26,7 @@ public class Constants {
 			public static final String URL_ADD = "/add";
 			public static final String URL_DELETE = "/delete";
 			public static final String URL_UPDATE = "/update";
+			public static final String URL_NEW = "/new";
 		}
 
 		public static class RESPONSE {

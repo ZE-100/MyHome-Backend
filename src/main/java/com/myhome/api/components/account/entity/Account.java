@@ -6,6 +6,7 @@ import com.myhome.api.components.house.entity.House;
 import com.myhome.api.components.member.entity.Member;
 import com.myhome.api.components.recipe.entity.Recipe;
 import com.myhome.api.components.room.entity.Room;
+import com.myhome.api.components.token.entity.Token;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,8 +32,9 @@ public class Account {
 	@Column(name = "password")
 	private String password;
 
-	@Column(name = "token")
-	private String token;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fkAccountId", referencedColumnName = "id")
+	private Token token;
 
 	@OneToMany(
 			cascade = {CascadeType.ALL},

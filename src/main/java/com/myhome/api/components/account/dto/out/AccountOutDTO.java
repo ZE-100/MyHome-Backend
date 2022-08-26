@@ -19,8 +19,6 @@ public class AccountOutDTO extends Response {
 
 	private String email;
 
-	private String token;
-
 	private Set<House> houses;
 
 	private Set<Member> members;

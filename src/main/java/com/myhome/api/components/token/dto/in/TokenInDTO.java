@@ -1,22 +1,23 @@
-package com.myhome.api.components.account.dto.in;
+package com.myhome.api.components.token.dto.in;
 
-import com.myhome.api.components.token.dto.in.TokenInDTO;
 import com.myhome.util.annotation.InDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @InDTO
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountInDTO {
+public class TokenInDTO {
 
-	private String email;
+	private String token;
 
-	private String password;
+	private Date createdAt;
 
-	private TokenInDTO token;
+	private String deviceSalt;
 }

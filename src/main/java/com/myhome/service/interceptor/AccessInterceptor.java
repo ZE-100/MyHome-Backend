@@ -3,7 +3,7 @@ package com.myhome.service.interceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myhome.service.validation.IValidationService;
 import com.myhome.util.logging.Logger;
-import com.myhome.util.logging.constants.LoggerLevel;
+import com.myhome.util.logging.constants.LogType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -37,7 +37,7 @@ public class AccessInterceptor implements HandlerInterceptor {
 
 		String[] basicAuthValues = basicAuth.get();
 
-		Logger.log(LoggerLevel.DEBUG, basicAuthValues[0] + " | " + basicAuthValues[1]);
+		Logger.log(LogType.DEBUG, this.getClass(), basicAuthValues[0] + " | " + basicAuthValues[1]);
 
 		return validate(basicAuthValues[0], basicAuthValues[1]) || createFailedResponse(response);
 	}
@@ -74,9 +74,8 @@ public class AccessInterceptor implements HandlerInterceptor {
 			response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
 			response.getWriter().write(mapper.writeValueAsString("AUTH FAILED"));
 		} catch (IOException e) {
-			Logger.log(LoggerLevel.ERROR, "Writer didn't succeed.");
+			Logger.log(LogType.ERROR, this.getClass(), "Writer didn't succeed.");
 		}
-
 		return false;
 	}
 

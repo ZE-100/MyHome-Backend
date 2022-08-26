@@ -1,4 +1,4 @@
-package com.myhome.api.components.account.dto;
+package com.myhome.api.components.account.dto.in;
 
 import com.myhome.util.annotation.InDTO;
 import lombok.AllArgsConstructor;
@@ -11,9 +11,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountChangeInDTO extends AccountInDTO {
+public abstract class AccountInDTO {
 
-	private String newEmail;
+	private String email;
 
-	private String newPassword;
+	private String password;
+
+	private String token;
 }

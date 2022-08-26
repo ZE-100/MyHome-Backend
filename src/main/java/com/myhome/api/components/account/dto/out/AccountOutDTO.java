@@ -1,4 +1,4 @@
-package com.myhome.api.components.account.dto;
+package com.myhome.api.components.account.dto.out;
 
 import com.myhome.api.components.house.entity.House;
 import com.myhome.api.components.member.entity.Member;

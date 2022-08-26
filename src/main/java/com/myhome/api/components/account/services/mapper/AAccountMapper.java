@@ -1,6 +1,6 @@
 package com.myhome.api.components.account.services.mapper;
 
-import com.myhome.api.components.account.dto.AccountOutDTO;
+import com.myhome.api.components.account.dto.out.AccountOutDTO;
 import com.myhome.api.components.account.entity.Account;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

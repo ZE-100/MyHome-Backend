@@ -1,9 +1,9 @@
 package com.myhome.api.components.account.controller;
 
-import com.myhome.api.components.account.dto.AccountChangeInDTO;
-import com.myhome.api.components.account.dto.AccountInDTO;
-import com.myhome.api.components.account.dto.AccountOutDTO;
-import com.myhome.api.components.account.dto.AccountRegistrationInDTO;
+import com.myhome.api.components.account.dto.in.AccountChangeInDTO;
+import com.myhome.api.components.account.dto.in.AccountInDTO;
+import com.myhome.api.components.account.dto.out.AccountOutDTO;
+import com.myhome.api.components.account.dto.in.AccountRegistrationInDTO;
 import com.myhome.api.components.account.services.crud.impl.AccountService;
 import com.myhome.api.util.Response;
 import com.myhome.other.Constants;

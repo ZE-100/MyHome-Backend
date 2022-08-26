@@ -1,24 +1,18 @@
 package com.myhome.api.components.account.services.crud.impl;
 
-import com.myhome.api.components.account.dto.AccountChangeInDTO;
-import com.myhome.api.components.account.dto.AccountInDTO;
-import com.myhome.api.components.account.dto.AccountOutDTO;
-import com.myhome.api.components.account.dto.AccountRegistrationInDTO;
-import com.myhome.api.components.account.entity.Account;
+import com.myhome.api.components.account.dto.in.AccountChangeInDTO;
+import com.myhome.api.components.account.dto.in.AccountInDTO;
+import com.myhome.api.components.account.dto.out.AccountOutDTO;
+import com.myhome.api.components.account.dto.in.AccountRegistrationInDTO;
 import com.myhome.api.components.account.repository.IAccountRepository;
 import com.myhome.api.components.account.services.crud.IAccountService;
 import com.myhome.api.components.account.services.crud.ILoginService;
 import com.myhome.api.components.account.services.crud.IRegisterService;
 import com.myhome.api.components.account.services.mapper.AAccountMapper;
 import com.myhome.api.util.Response;
-import com.myhome.api.util.ValidationResult;
 import com.myhome.service.validation.IValidationService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @AllArgsConstructor

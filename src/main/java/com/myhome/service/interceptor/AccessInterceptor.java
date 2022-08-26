@@ -1,20 +1,20 @@
 package com.myhome.service.interceptor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myhome.other.Constants;
-import com.myhome.service.Validator;
 import com.myhome.service.validation.IValidationService;
-import com.myhome.util.Logger;
+import com.myhome.util.logging.Logger;
+import com.myhome.util.logging.constants.LoggerLevel;
 import lombok.AllArgsConstructor;
-import org.apache.logging.log4j.message.Message;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -23,31 +23,64 @@ public class AccessInterceptor implements HandlerInterceptor {
 	private IValidationService validate;
 	private ObjectMapper mapper;
 
-
-	@Override //TODO improve to handle basic auth
-	public boolean preHandle(
-			HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_OK);
 
-		String requestURI = request.getRequestURI();
-		String requestMethod = request.getMethod();
-		String email = request.getHeader("email");
-		String token = request.getHeader("token");
+		Optional<String[]> basicAuth = getBasicAuthFrom(request);
 
-		// Guard
-		if (email == null || token == null) {
-			response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-			response.getWriter().write(mapper.writeValueAsString(Constants.API.RESPONSE.EMAIL_NOT_NULL));
-			return false;
+		if (basicAuth.isEmpty() || !allElementsPresent(basicAuth.get())) {
+			return createFailedResponse(response);
 		}
 
-		Logger.log("sas", "Interceptor triggered:   "  + email + " - "  + token);
-		return allElementsPresent(email, token);
+		String[] basicAuthValues = basicAuth.get();
+
+		Logger.log(LoggerLevel.DEBUG, basicAuthValues[0] + " | " + basicAuthValues[1]);
+
+		return validate(basicAuthValues[0], basicAuthValues[1]) || createFailedResponse(response);
 	}
 
-	private boolean allElementsPresent(String...args) {
-		return Arrays.stream(args).toList().stream().noneMatch(String::isEmpty);
+	/**
+	 * Gathers base64 basic authentication
+	 *
+	 * @param request Entirety of request
+	 * @return Base64 authentication: email & password, if present
+	 */
+	private Optional<String[]> getBasicAuthFrom(HttpServletRequest request) {
+		final String authorization = request.getHeader("Authorization");
+
+		Optional<String[]> basicAuth = Optional.empty();
+
+		if (authorization == null || !authorization.toLowerCase().startsWith("basic"))
+			return basicAuth;
+
+		// Authorization: Basic base64credentials
+		String base64Credentials = authorization.substring("Basic".length()).trim();
+		byte[] decodedCredentials = Base64.getDecoder().decode(base64Credentials);
+		String credentials = new String(decodedCredentials, StandardCharsets.UTF_8);
+
+		// credentials = username:password
+		return Optional.of(credentials.split(":", 2));
+	}
+
+	private boolean allElementsPresent(String[] values) {
+		return Arrays.stream(values).toList().stream().noneMatch(String::isEmpty);
+	}
+
+	private boolean createFailedResponse(HttpServletResponse response) {
+		try {
+			response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+			response.getWriter().write(mapper.writeValueAsString("AUTH FAILED"));
+		} catch (IOException e) {
+			Logger.log(LoggerLevel.ERROR, "Writer didn't succeed.");
+		}
+
+		return false;
+	}
+
+	private boolean validate(String email, String password) {
+		return validate.validateLogin(email, password);
 	}
 }

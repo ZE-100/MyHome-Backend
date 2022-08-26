@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class AccountInDTO {
+public class AccountInDTO {
 
 	private String email;
 

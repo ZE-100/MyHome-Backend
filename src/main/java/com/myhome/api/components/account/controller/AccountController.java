@@ -1,16 +1,15 @@
 package com.myhome.api.components.account.controller;
 
+import com.myhome.api.components.account.dto.AccountChangeInDTO;
+import com.myhome.api.components.account.dto.AccountInDTO;
+import com.myhome.api.components.account.dto.AccountOutDTO;
+import com.myhome.api.components.account.dto.AccountRegistrationInDTO;
 import com.myhome.api.components.account.services.crud.impl.AccountService;
+import com.myhome.api.util.Response;
 import com.myhome.other.Constants;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * @author z-100
- * Class used to communicate between API and backend
- */
 @RestController
 @AllArgsConstructor
 @RequestMapping(Constants.API.URL_ACCOUNT)
@@ -18,51 +17,34 @@ public class AccountController {
 
 	private final AccountService accountService;
 
-	private ResponseEntity<?> response;
-
 	@PostMapping(Constants.API.CRUD.URL_LOGIN)
-	public ResponseEntity<?> login(
-			@RequestHeader("email") String email,
-			@RequestHeader("password") String password) {
-
-		return accountService.login(email, password);
+	public AccountOutDTO login(@RequestHeader(name = "account") AccountInDTO account) {
+		return accountService.login(account);
 	}
 
-/*	@PostMapping(value = Constants.API.CRUD.URL_REGISTER)
-	public ResponseEntity<?> register(
-			@RequestHeader("email") String email,
-			@RequestHeader("password") String password,
-			@RequestHeader("new-house-name") String newHouseName,
-			@RequestHeader("default-member-name") String defaultMemberName,
-			@RequestHeader("token") String token) {
-
-		return null;
+	@PostMapping(value = Constants.API.CRUD.URL_REGISTER)
+	public AccountOutDTO register(@RequestParam("accountRegistration") AccountRegistrationInDTO registration) {
+		return accountService.register(registration);
 	}
 
 	@GetMapping(Constants.API.CRUD.URL_GET)
-	public ResponseEntity<?> getAccount(
-			@RequestHeader("email") String email,
-			@RequestHeader("token") String token) {
-
-		return null;
+	public AccountOutDTO getAccount(@RequestParam("account") AccountInDTO account) {
+		return accountService.getAccount(account);
 	}
 
-	@GetMapping(Constants.API.CRUD.URL_UPDATE)
-	public ResponseEntity<?> updateAccount(
-			@RequestHeader("email") String email,
-			@RequestHeader("token") String token,
-			@RequestHeader("new-email") String newEmail,
-			@RequestHeader("new-password") String newPassword) {
-
-		return null;
+	@PostMapping(Constants.API.CRUD.URL_UPDATE)
+	public AccountOutDTO updateAccount(@RequestParam("account") AccountChangeInDTO accountChangeIn) {
+		return accountService.update(accountChangeIn);
 	}
 
-	@GetMapping(Constants.API.CRUD.URL_DELETE)
-	public ResponseEntity<?> deleteAccount(
-			@RequestHeader("email") String email,
-			@RequestHeader("token") String token) {
+	@DeleteMapping(Constants.API.CRUD.URL_DELETE)
+	public Response deleteAccount(@RequestParam("account") AccountInDTO account) {
+		return accountService.delete(account);
+	}
 
-		return null;
-	}*/
+	@PutMapping(Constants.API.CRUD.URL_PW_FORGOTTEN)
+	public void passwordForgotten(@RequestParam("account") AccountInDTO account) {
+		accountService.delete(account);
+	}
 }
 

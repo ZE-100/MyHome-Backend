@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.myhome.api.components.account.entity.Account;
 import com.myhome.api.components.member.entity.Member;
 import com.myhome.api.components.recipe.entity.Recipe;
-import com.myhome.api.components.room.entity.Room;
-import com.myhome.api.components.shoppinglist.entity.ShoppingList;
+//import com.myhome.api.components.room.entity.Room;
+//import com.myhome.api.components.shoppinglist.entity.ShoppingList;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,29 +26,32 @@ public class House {
 	@Column(name = "id", nullable = false)
 	private Long id;
 
+
 	@Column(name = "name")
 	private String name;
+
+
+//	@OneToOne(mappedBy = "fkHouseId")
+//	@JsonManagedReference
+//	private ShoppingList shoppinglist;
+
+
+//	@OneToMany(ca§scade = {CascadeType.ALL},
+//			orphanRemoval = true,
+//			mappedBy = "fkHouseId")
+//	@JsonBackReference
+//	private List<Room> rooms;
+
+
+	@OneToMany(cascade = {CascadeType.ALL},
+			orphanRemoval = true,
+			mappedBy = "fkHouseId")
+	@JsonBackReference
+	private Set<Recipe> recipes;
+
 
 	@ManyToOne
 	@JoinColumn(name = "fkAccountId")
 	@JsonManagedReference
 	private Account fkAccountId;
-
-	@OneToOne(mappedBy = "fkHouseId")
-	@JsonManagedReference
-	private ShoppingList shoppinglist;
-
-	@OneToMany(
-			cascade = {CascadeType.ALL},
-			orphanRemoval = true,
-			mappedBy = "fkHouseId")
-	@JsonBackReference
-	private List<Room> rooms;
-
-	@OneToMany(
-			cascade = {CascadeType.ALL},
-			orphanRemoval = true,
-			mappedBy = "fkHouseId")
-	@JsonBackReference
-	private Set<Recipe> recipes;
 }

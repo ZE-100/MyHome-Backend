@@ -29,6 +29,10 @@ public class AccessInterceptor implements HandlerInterceptor {
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_OK);
 
+		if (uriIsNewTokenUrl(request))
+			return true;
+
+
 		Optional<String[]> basicAuth = getBasicAuthFrom(request);
 
 		if (basicAuth.isEmpty() || !allElementsPresent(basicAuth.get())) {
@@ -40,6 +44,10 @@ public class AccessInterceptor implements HandlerInterceptor {
 		Logger.log(LogType.DEBUG, this.getClass(), basicAuthValues[0] + " | " + basicAuthValues[1]);
 
 		return validate(basicAuthValues[0], basicAuthValues[1]) || createFailedResponse(response);
+	}
+
+	private boolean uriIsNewTokenUrl(HttpServletRequest request) {
+		return request.getRequestURI().contains("/token/new");
 	}
 
 	/**

@@ -18,14 +18,14 @@ public class Token {
 	@Column(name = "id", nullable = false)
 	private Long id;
 
-	@Column(name = "token")
-	private String token;
+	@Column(name = "uuid")
+	private String uuid;
 
 	@Column(name = "createdAt")
 	private Date createdAt;
 
 	@Column(name = "deviceSalt")
-	private Long deviceSalt; //TODO implement this. Hash of device
+	private String deviceSalt; //TODO implement this. Hash of device
 
 	@OneToOne(mappedBy = "token")
 	private Account fkAccountId;

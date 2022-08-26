@@ -1,7 +1,7 @@
 package com.myhome.api.components.recipe.dto;
 
 import com.myhome.api.components.house.entity.House;
-import com.myhome.api.components.item.entity.Item;
+//import com.myhome.api.components.item.entity.Item;
 import com.myhome.api.components.member.entity.Member;
 import lombok.Data;
 
@@ -17,5 +17,5 @@ public class RecipeDTO {
 
 	private Integer forAmountOfPeople;
 
-	private List<Item> items;
+//	private List<Item> items;
 }

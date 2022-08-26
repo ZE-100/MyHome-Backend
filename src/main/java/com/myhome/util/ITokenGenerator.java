@@ -1,6 +1,9 @@
 package com.myhome.util;
 
+import com.myhome.api.components.token.dto.in.TokenInDTO;
+import com.myhome.api.components.token.entity.Token;
+
 public interface ITokenGenerator {
 
-	String createNewToken();
+	Token createNewToken(TokenInDTO tokenIn);
 }

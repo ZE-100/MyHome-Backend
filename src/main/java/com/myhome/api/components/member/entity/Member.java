@@ -22,28 +22,31 @@ public class Member {
 	@Column(name = "id", nullable = false)
 	private Long id;
 
+
 	@Column(name = "name")
 	private String name;
+
 
 	@Column(name = "icon")
 	private Integer icon;
 
-	@ManyToOne
-	@JoinColumn(name = "fkAccountId")
-	@JsonManagedReference
-	private Account fkAccountId;
 
-	@OneToMany(
-			cascade = {CascadeType.ALL},
+	@OneToMany(cascade = {CascadeType.ALL},
 			orphanRemoval = true,
 			mappedBy = "fkMemberId")
 	@JsonBackReference
 	private Set<Meal> meals;
 
-	@OneToMany(
-			cascade = {CascadeType.ALL},
+
+	@OneToMany(cascade = {CascadeType.ALL},
 			orphanRemoval = true,
 			mappedBy = "fkMemberId")
 	@JsonBackReference
 	private Set<Rating> ratings;
+
+
+	@ManyToOne
+	@JoinColumn(name = "fkAccountId")
+	@JsonManagedReference
+	private Account fkAccountId;
 }

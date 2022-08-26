@@ -1,6 +1,6 @@
 package com.myhome.api.components.house.dto;
 
-import com.myhome.api.components.room.entity.Room;
+//import com.myhome.api.components.room.entity.Room;
 import lombok.Data;
 
 import java.util.List;
@@ -12,6 +12,6 @@ public class HouseDTO {
 
 	private String name;
 
-	private List<Room> rooms;
+//	private List<Room> rooms;
 
 }

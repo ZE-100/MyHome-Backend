@@ -4,6 +4,8 @@ import com.myhome.api.util.validation.http.ValidationStatus;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 @Setter
@@ -12,9 +14,17 @@ public class ValidationResult {
 
 	private ValidationStatus status;
 
-	private Set<ValidationResultEntry> infos;
-	private Set<ValidationResultEntry> warnings;
-	private Set<ValidationResultEntry> errors;
+	private Set<ValidationResultEntry> infos = new HashSet<>();
+	private Set<ValidationResultEntry> warnings = new HashSet<>();
+	private Set<ValidationResultEntry> errors = new HashSet<>();
+
+	public ValidationResult() {
+		this.status = ValidationStatus.OK;
+	}
+
+	public static ValidationResult Ok() {
+		return new ValidationResult();
+	}
 
 	public boolean isOk() {
 		return this.warnings.isEmpty()
@@ -50,15 +60,15 @@ public class ValidationResult {
 	}
 
 	private void addInfo(ValidationStatus status, String reason, String... details) {
-		this.infos.add(new ValidationResultEntry(status, reason, details));
+		this.add(new ValidationResultEntry(status, reason, Arrays.asList(details)));
 	}
 
 	private void addWarning(ValidationStatus status, String reason, String... details) {
-		this.warnings.add(new ValidationResultEntry(status, reason, details));
+		this.add(new ValidationResultEntry(status, reason, Arrays.asList(details)));
 	}
 
 	private void addError(ValidationStatus status, String reason, String... details) {
-		this.errors.add(new ValidationResultEntry(status, reason, details));
+		this.add(new ValidationResultEntry(status, reason, Arrays.asList(details)));
 	}
 
 	private void updateStatus() {

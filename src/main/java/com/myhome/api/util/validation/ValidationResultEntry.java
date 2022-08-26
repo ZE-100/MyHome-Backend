@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,7 +18,7 @@ public class ValidationResultEntry {
 
 	private String reason;
 
-	private String[] details;
+	private List<String> details;
 
 	private boolean isInfo() {
 		return this.status == ValidationStatus.INFO;
@@ -31,6 +33,6 @@ public class ValidationResultEntry {
 	}
 
 	private boolean hasDetails() {
-		return this.details.length > 0;
+		return this.details.size() > 0;
 	}
 }

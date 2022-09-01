@@ -51,5 +51,5 @@ public class Account {
 			orphanRemoval = true,
 			mappedBy = "fkAccountId")
 	@JsonBackReference
-	private Set<Member> members;
+	private List<Member> members;
 }

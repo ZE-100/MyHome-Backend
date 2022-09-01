@@ -20,7 +20,7 @@ public class ValidationService implements IValidationService {
 	private IAccountRepository accountRepository;
 
 	@Override
-	public Boolean validateLogin(String email, String password) {
+	public Boolean hasValidLogin(String email, String password) {
 
 		return accountRepository.findByEmailAndPassword(email, password).isPresent();
 	}

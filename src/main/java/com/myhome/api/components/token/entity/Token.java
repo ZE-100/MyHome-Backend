@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 @Table(name = "token")
 public class Token {
-
+//TODO FIX ENTIRE ENTITY STRUCTURE
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)

@@ -10,5 +10,5 @@ import lombok.Setter;
 @Getter
 public abstract class Response {
 
-	private ValidationResult validationResult;
+	private ValidationResult validationResult = ValidationResult.Ok();
 }

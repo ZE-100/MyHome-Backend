@@ -6,11 +6,9 @@ import com.myhome.api.components.token.dto.out.TokenOutDTO;
 import com.myhome.api.components.token.entity.Token;
 import com.myhome.api.components.token.repository.ITokenRepository;
 import com.myhome.api.components.token.services.crud.ITokenService;
-import com.myhome.api.util.validation.ValidationResult;
-import com.myhome.api.util.validation.http.ValidationStatus;
+import com.myhome.api.util.validation.CreateResponse;
+import com.myhome.service.validation.IValidationService;
 import com.myhome.util.ITokenGenerator;
-import com.myhome.util.logging.Logger;
-import com.myhome.util.logging.constants.LogType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,21 +20,15 @@ public class TokenService implements ITokenService {
 
 	private final ITokenRepository repository;
 	private final ITokenGenerator generator;
+	private final IValidationService validator;
 
 	@Override
 	public TokenOutDTO generateNewToken(TokenInDTO tokenIn) {
 
 		TokenOutDTO tokenOut = new TokenOutDTO();
 
-		// Guard
-		if (tokenIn.getDeviceSalt() == null) {
-			Logger.log(LogType.ERROR, this.getClass(), "No device salt supplied");
-
-			ValidationResult validationResult = new ValidationResult();
-			validationResult.add(ValidationStatus.ERROR, "No device salt supplied", "sas", "sus");
-			tokenOut.setValidationResult(validationResult);
-			return tokenOut;
-		}
+		if (tokenIn.getDeviceSalt() == null) // Guard
+			return CreateResponse.newError(tokenOut, "No device salt supplied");
 
 		Token newToken = generator.createNewToken(tokenIn);
 
@@ -45,13 +37,8 @@ public class TokenService implements ITokenService {
 		Optional<Token> savedToken = repository
 				.findByUuidAndCreatedAt(newToken.getUuid(), newToken.getCreatedAt());
 
-		// Guard
-		if (savedToken.isEmpty()) {
-			ValidationResult validationResult = new ValidationResult();
-			validationResult.add(ValidationStatus.ERROR, "Failed to save token");
-			tokenOut.setValidationResult(validationResult);
-			return tokenOut;
-		}
+		if (savedToken.isEmpty()) // Guard
+			return CreateResponse.newError(tokenOut, "Failed to save token");
 
 		tokenOut.setToken(savedToken.get().getUuid());
 		tokenOut.setCreatedAt(savedToken.get().getCreatedAt());
@@ -66,6 +53,34 @@ public class TokenService implements ITokenService {
 
 	@Override
 	public TokenOutDTO getToken(AccountInDTO accountIn) {
+
+		TokenOutDTO tokenOut = new TokenOutDTO();
+
+		if (accountAlreadyHasCorrectToken(accountIn, tokenOut))
+			return CreateResponse.newSuccess(tokenOut, "Token already saved correctly");
+
+
+		if (!validator.hasValidLogin(accountIn.getEmail(), accountIn.getPassword()))
+			return CreateResponse.newError(tokenOut, "No valid login present");
+
+
 		return null;
+	}
+
+	private boolean accountAlreadyHasCorrectToken(AccountInDTO accountIn, TokenOutDTO tokenOut) {
+		if (accountIn.getToken() != null) {
+			TokenInDTO tokenIn = accountIn.getToken();
+
+			Optional<Token> potentialTokenFromDatabase =
+					repository.findByUuidAndCreatedAt(tokenIn.getToken(), tokenIn.getCreatedAt());
+
+			if (potentialTokenFromDatabase.isPresent()) {
+				tokenOut.setToken(tokenIn.getToken());
+				tokenOut.setCreatedAt(tokenIn.getCreatedAt());
+
+				return true;
+			}
+		}
+		return false;
 	}
 }

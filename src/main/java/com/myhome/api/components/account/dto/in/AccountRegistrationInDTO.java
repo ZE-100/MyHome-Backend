@@ -11,11 +11,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountRegistrationInDTO extends AccountInDTO {
+public class AccountRegistrationInDTO {
 
 	private String validationSentence;
 
 	private String newHouseName;
 
 	private String defaultMemberName;
+
+	private AccountInDTO accountIn;
 }

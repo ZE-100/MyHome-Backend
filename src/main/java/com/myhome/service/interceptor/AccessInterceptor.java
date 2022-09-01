@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -29,7 +30,7 @@ public class AccessInterceptor implements HandlerInterceptor {
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_OK);
 
-		if (uriIsNewTokenUrl(request))
+		if (urlIsAllowedToSkipAuth(request))
 			return true;
 
 
@@ -46,8 +47,9 @@ public class AccessInterceptor implements HandlerInterceptor {
 		return validate(basicAuthValues[0], basicAuthValues[1]) || createFailedResponse(response);
 	}
 
-	private boolean uriIsNewTokenUrl(HttpServletRequest request) {
-		return request.getRequestURI().contains("/token/new");
+	private boolean urlIsAllowedToSkipAuth(HttpServletRequest request) {
+		return Arrays.stream(UrlWhiteList.values())
+				.anyMatch(allowedURL -> request.getRequestURI().contains(allowedURL.val));
 	}
 
 	/**
@@ -74,7 +76,7 @@ public class AccessInterceptor implements HandlerInterceptor {
 	}
 
 	private boolean allElementsPresent(String[] values) {
-		return Arrays.stream(values).toList().stream().noneMatch(String::isEmpty);
+		return Arrays.stream(values).noneMatch(String::isEmpty);
 	}
 
 	private boolean createFailedResponse(HttpServletResponse response) {
@@ -88,6 +90,22 @@ public class AccessInterceptor implements HandlerInterceptor {
 	}
 
 	private boolean validate(String email, String password) {
-		return validate.validateLogin(email, password);
+		return validate.hasValidLogin(email, password);
+	}
+
+	enum UrlWhiteList { //TODO Not in here...
+		LOGIN("account/login"),
+		REGISTER("account/register"),
+		NEW_TOKEN("/token/new");
+
+		String val;
+
+		UrlWhiteList (String val) {
+			this.val = val;
+		}
+
+//		public List<String> values() {
+//			return this.values();
+//		}
 	}
 }

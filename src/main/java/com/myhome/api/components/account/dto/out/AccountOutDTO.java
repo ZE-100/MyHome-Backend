@@ -6,7 +6,7 @@ import com.myhome.api.util.Response;
 import com.myhome.util.annotation.OutDTO;
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
 @OutDTO
 @Getter
@@ -15,11 +15,11 @@ import java.util.Set;
 @NoArgsConstructor
 public class AccountOutDTO extends Response {
 
-	private Integer id;
+	private Long id;
 
 	private String email;
 
-	private Set<House> houses;
+	private List<House> houses;
 
-	private Set<Member> members;
+	private List<Member> members;
 }
